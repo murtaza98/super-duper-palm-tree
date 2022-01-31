@@ -48,4 +48,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            - finalPackageForRelease/*.zip
+            - finalPackageForRelease/dialogflow_1.2.4_compiled.zip
+            - finalPackageForRelease/dialogflow_1.2.4_non_compiled.zip
