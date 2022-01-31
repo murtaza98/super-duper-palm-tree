@@ -28,12 +28,12 @@ jobs:
         run: rc-apps package
 
       - name: Setup for uploading compiled app bundle
-        run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && 7z x dist/$COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/compiledBundle/ -y
+        run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && 7z x dist/$COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/compiledBundle/ -y 
 
       - name: Upload the compiled app bundle
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: echo "${COMPILED_APP_PACKAGE%.*}_compiled.zip"
+          name: ${{ echo "${COMPILED_APP_PACKAGE%.*}_compiled.zip" }}
           path: compiledBundle/
           if-no-files-found: error
           retention-days: 30
@@ -47,7 +47,7 @@ jobs:
       - name: Upload the non-compiled app bundle
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: echo "${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip"
+          name:  ${{ echo "${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip" }}
           path: nonCompiledBundle/
           if-no-files-found: error
           retention-days: 30
