@@ -28,12 +28,14 @@ jobs:
         run: rc-apps package
 
       - name: Setup for uploading compiled app bundle
-        run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && 7z x dist/$COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/compiledBundle/ -y 
+        run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV &&
+          7z x dist/$COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/compiledBundle/ -y &&
+          echo "COMPILED_APP_PACKAGE_NAME=${COMPILED_APP_PACKAGE%.*}_compiled.zip" >> $GITHUB_ENV
 
       - name: Upload the compiled app bundle
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: ${{ echo "${COMPILED_APP_PACKAGE%.*}_compiled.zip" }}
+          name: ${{ COMPILED_APP_PACKAGE_NAME }}
           path: compiledBundle/
           if-no-files-found: error
           retention-days: 30
@@ -42,12 +44,15 @@ jobs:
         run: rm -rf compiledBundle/ && rm -rf dist/
 
       - name: Setup for uploading non-compiled app bundle
-        run: rc-apps package --no-compile && echo "NON_COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && 7z x dist/$NON_COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/nonCompiledBundle/ -y
+        run: rc-apps package --no-compile && 
+          echo "NON_COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV &&
+          7z x dist/$NON_COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/nonCompiledBundle/ -y &&
+          echo "NON_COMPILED_APP_PACKAGE_NAME=${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip" >> $GITHUB_ENV
 
       - name: Upload the non-compiled app bundle
         uses: actions/upload-artifact@v2.2.4
         with:
-          name:  ${{ echo "${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip" }}
+          name:  ${{ NON_COMPILED_APP_PACKAGE_NAME }}
           path: nonCompiledBundle/
           if-no-files-found: error
           retention-days: 30
