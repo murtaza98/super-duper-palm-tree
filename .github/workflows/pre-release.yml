@@ -35,11 +35,9 @@ jobs:
         run: rc-apps package 
 
       - name: Create compiled package bundle
-        run: pwd &&
-          mkdir -p finalPackageForRelease/ &&
-          mv dist/$(ls dist/ | head -1) finalPackageForRelease/${$(ls dist/ | head -1)%.*}_compiled.zip &&
-          rm -rf dist/ &&
-          ls finalPackageForRelease/
+        run: |
+          chmod +x ./.scripts/compiledPackage.sh
+          ./.scripts/compiledPackage.sh
 
       - name: create non-compiled package bundle
         run: rc-apps package --no-compile && 
