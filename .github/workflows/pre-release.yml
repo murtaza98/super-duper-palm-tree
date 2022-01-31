@@ -34,9 +34,9 @@ jobs:
       - name: Fetch tags
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-      - name: get target tag from app.json file
+      - name: Get target tag from app.json file
         id: package
-        run: echo ::set-output name=target_tag::$(cat app.json | jq -r '.version)'
+        run: echo ::set-output name=target_tag::$(cat app.json | jq -r '.version')
 
       - name: 'Check if tag exists'
         id: tagged
