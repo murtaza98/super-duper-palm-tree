@@ -40,7 +40,7 @@ jobs:
         run: |
           chmod +x ./.scripts/nonCompiledPackage.sh
           ./.scripts/nonCompiledPackage.sh
-
+      
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -49,3 +49,6 @@ jobs:
           title: "Development Build"
           files: |
             finalPackageForRelease/dialogflow_1.2.4_compiled.zip
+            finalPackageForRelease/dialogflow_1.2.4_non_compiled.zip
+
+        # TODO: add a new step to send a notification to the open server
