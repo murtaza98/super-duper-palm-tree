@@ -42,10 +42,9 @@ jobs:
 
       - name: create non-compiled package bundle
         run: rc-apps package --no-compile && 
-          echo "NON_COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV &&
-          echo "NON_COMPILED_APP_PACKAGE_NAME=${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip" >> $GITHUB_ENV &&
-          mkdir -p finalPackageForRelease/ && mv dist/$NON_COMPILED_APP_PACKAGE finalPackageForRelease/$NON_COMPILED_APP_PACKAGE_NAME &&
-          rm -rf dist/
+          echo "NON_COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && echo "${NON_COMPILED_APP_PACKAGE}" &&
+          echo "NON_COMPILED_APP_PACKAGE_NAME=${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip" >> $GITHUB_ENV && echo "${NON_COMPILED_APP_PACKAGE_NAME}" &&
+          mv dist/$NON_COMPILED_APP_PACKAGE finalPackageForRelease/$NON_COMPILED_APP_PACKAGE_NAME
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
