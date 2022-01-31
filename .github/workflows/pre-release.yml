@@ -41,7 +41,9 @@ jobs:
       - name: 'Check if tag exists'
         id: tagged
         shell: bash
-        run: git show-ref --tags --verify --quiet -- "refs/tags/${{ steps.package.outputs.target_tag }}" && echo "Error! Unable to create a new release. It seems there's already a tag with version ${{ steps.package.outputs.target_tag }}. Please update the version in app.json file"  || echo "::set-output name=tagged::1"
+        run: git show-ref --tags --verify --quiet -- "refs/tags/${{ steps.package.outputs.target_tag }}" &&
+          echo "Error! Unable to create a new release. It seems there's already a tag with version ${{ steps.package.outputs.target_tag }}. Please update the version in app.json file"  || echo "::set-output name=tagged::1" &&
+          exit 1
 
       - name: Create compiled package bundle
         run: |
