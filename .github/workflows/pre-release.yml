@@ -31,19 +31,15 @@ jobs:
       - name: Typescript check
         run: npm run typecheck
 
-      - name: Bundle App
-        run: rc-apps package 
-
       - name: Create compiled package bundle
         run: |
           chmod +x ./.scripts/compiledPackage.sh
           ./.scripts/compiledPackage.sh
 
-      - name: create non-compiled package bundle
-        run: rc-apps package --no-compile && 
-          echo "NON_COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && echo "${NON_COMPILED_APP_PACKAGE}" &&
-          echo "NON_COMPILED_APP_PACKAGE_NAME=${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip" >> $GITHUB_ENV && echo "${NON_COMPILED_APP_PACKAGE_NAME}" &&
-          mv dist/$NON_COMPILED_APP_PACKAGE finalPackageForRelease/$NON_COMPILED_APP_PACKAGE_NAME
+      - name: Create non-compiled package bundle
+        run: |
+          chmod +x ./.scripts/nonCompiledPackage.sh
+          ./.scripts/nonCompiledPackage.sh
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -52,5 +48,4 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            - finalPackageForRelease/$COMPILED_APP_PACKAGE_NAME
-            - finalPackageForRelease/$NON_COMPILED_APP_PACKAGE_NAME
+            - finalPackageForRelease/*.zip

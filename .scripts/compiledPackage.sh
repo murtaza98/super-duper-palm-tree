@@ -1,11 +1,7 @@
 #!/bin/bash
-pwd
-ls dist/
+rm -rf dist/
+rc-apps package
 mkdir -p finalPackageForRelease/
-tmp1=$(ls dist/ | head -1)
-echo "tmp1", $tmp1
-tmp2=${tmp1%.*}_compiled.zip
-echo "tmp2", $tmp2
-mv dist/$tmp1 finalPackageForRelease/$tmp2
-# rm -rf dist/
-ls finalPackageForRelease/
+fileOrigName=$(ls dist/ | head -1)
+fileNewName=${fileOrigName%.*}_compiled.zip
+mv dist/$fileOrigName finalPackageForRelease/$fileNewName
