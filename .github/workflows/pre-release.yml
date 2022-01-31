@@ -38,7 +38,8 @@ jobs:
         run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV &&
           echo "COMPILED_APP_PACKAGE_NAME=${COMPILED_APP_PACKAGE%.*}_compiled.zip" >> $GITHUB_ENV &&
           mkdir -p finalPackageForRelease/ && mv dist/$COMPILED_APP_PACKAGE finalPackageForRelease/$COMPILED_APP_PACKAGE_NAME &&
-          rm -rf dist/
+          rm -rf dist/ &&
+          ls finalPackageForRelease/
 
       - name: create non-compiled package bundle
         run: rc-apps package --no-compile && 
