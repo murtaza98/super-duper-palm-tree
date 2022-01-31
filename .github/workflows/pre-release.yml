@@ -35,7 +35,7 @@ jobs:
         run: rc-apps package 
 
       - name: Create compiled package bundle
-        run: pwd && echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV &&
+        run: pwd && ls dist/ && echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV &&
           echo "COMPILED_APP_PACKAGE_NAME=${COMPILED_APP_PACKAGE%.*}_compiled.zip" >> $GITHUB_ENV &&
           echo "COMPILED_APP_PACKAGE - ${COMPILED_APP_PACKAGE}" &&
           echo "COMPILED_APP_PACKAGE_NAME - ${COMPILED_APP_PACKAGE_NAME}" &&
