@@ -31,6 +31,18 @@ jobs:
       - name: Typescript check
         run: npm run typecheck
 
+      - name: Fetch tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+      - name: get target tag from app.json file
+        id: package
+        run: echo ::set-output name=target_tag::$(cat app.json | jq -r '.version)'
+
+      - name: 'Check if tag exists'
+        id: tagged
+        shell: bash
+        run: git show-ref --tags --verify --quiet -- "refs/tags/${{ steps.package.outputs.target_tag }}" && echo "Error! Unable to create a new release. It seems there's already a tag with version ${{ steps.package.outputs.target_tag }}. Please update the version in app.json file"  || echo "::set-output name=tagged::1"
+
       - name: Create compiled package bundle
         run: |
           chmod +x ./.scripts/compiledPackage.sh
@@ -44,9 +56,9 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: "${{ steps.package.outputs.target_tag }}"
           prerelease: true
-          title: "Development Build"
+          title: "Release ${{ steps.package.outputs.target_tag }}"
           files: |
             finalPackageForRelease/dialogflow_1.2.4_compiled.zip
             finalPackageForRelease/dialogflow_1.2.4_non_compiled.zip
