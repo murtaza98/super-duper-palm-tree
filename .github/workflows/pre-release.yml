@@ -48,5 +48,4 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            - $GITHUB_WORKSPACE/finalPackageForRelease/dialogflow_1.2.4_compiled.zip
-            - $GITHUB_WORKSPACE/finalPackageForRelease/dialogflow_1.2.4_non_compiled.zip
+            $GITHUB_WORKSPACE/finalPackageForRelease/dialogflow_1.2.4_compiled.zip
