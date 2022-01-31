@@ -31,7 +31,7 @@ jobs:
         run: rc-apps package --no-compile
 
       - name: Set env with filename
-        run: echo "COMPILED_APP_PACKAGE=$(echo ls dist/ | head -1)" >> $GITHUB_ENV
+        run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV
 
       - name: Extract compiled folder
         run: 7z x dist/$COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/rawDist/ -y
