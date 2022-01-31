@@ -27,19 +27,27 @@ jobs:
       - name: Bundle App
         run: rc-apps package
 
-      - name: Bundle App for Marketplace
-        run: rc-apps package --no-compile
+      - name: Setup for uploading compiled app bundle
+        run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && 7z x dist/$COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/compiledBundle/ -y
 
-      - name: Set env with filename
-        run: echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV
-
-      - name: Extract compiled folder
-        run: 7z x dist/$COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/rawDist/ -y
-
-      - name: Upload a Build Artifact
+      - name: Upload the compiled app bundle
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: app.zip
-          path: rawDist/
+          name: echo "${COMPILED_APP_PACKAGE%.*}_compiled.zip"
+          path: compiledBundle/
+          if-no-files-found: error
+          retention-days: 30
+      
+      - name: Cleanup compiled bundle
+        run: rm -rf compiledBundle/ && rm -rf dist/
+
+      - name: Setup for uploading non-compiled app bundle
+        run: rc-apps package --no-compile && echo "NON_COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV && 7z x dist/$NON_COMPILED_APP_PACKAGE -o$GITHUB_WORKSPACE/nonCompiledBundle/ -y
+
+      - name: Upload the non-compiled app bundle
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: echo "${NON_COMPILED_APP_PACKAGE%.*}_non_compiled.zip"
+          path: nonCompiledBundle/
           if-no-files-found: error
           retention-days: 30
