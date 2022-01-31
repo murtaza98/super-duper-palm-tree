@@ -35,12 +35,9 @@ jobs:
         run: rc-apps package 
 
       - name: Create compiled package bundle
-        run: pwd && ls dist/ && echo "COMPILED_APP_PACKAGE=$(ls dist/ | head -1)" >> $GITHUB_ENV &&
-          echo "COMPILED_APP_PACKAGE_NAME=${COMPILED_APP_PACKAGE%.*}_compiled.zip" >> $GITHUB_ENV &&
-          echo "COMPILED_APP_PACKAGE - ${COMPILED_APP_PACKAGE}" &&
-          echo "COMPILED_APP_PACKAGE_NAME - ${COMPILED_APP_PACKAGE_NAME}" &&
+        run: pwd &&
           mkdir -p finalPackageForRelease/ &&
-          mv dist/$COMPILED_APP_PACKAGE finalPackageForRelease/$COMPILED_APP_PACKAGE_NAME &&
+          mv dist/$(ls dist/ | head -1) finalPackageForRelease/${$(ls dist/ | head -1)%.*}_compiled.zip &&
           rm -rf dist/ &&
           ls finalPackageForRelease/
 
