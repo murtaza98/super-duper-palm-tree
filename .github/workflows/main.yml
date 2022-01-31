@@ -26,3 +26,14 @@ jobs:
 
       - name: Bundle App
         run: rc-apps package
+
+      - name: Bundle App for Marketplace
+        run: rc-apps package --no-compile
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: app.zip
+          path: dist/
+          if-no-files-found: error
+          retention-days: 30
